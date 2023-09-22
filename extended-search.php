@@ -13,3 +13,7 @@
  * Domain Path:       /languages
  */
 defined('ABSPATH') || exit();
+
+// define plugin constants
+define('EXTENDED_SEARCH_PLUGIN_DIR_PATH', plugin_dir_path(__FILE__));
+define('EXTENDED_SEARCH_PLUGIN_DIR_URL', plugin_dir_url(__FILE__));

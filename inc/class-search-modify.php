@@ -47,18 +47,34 @@ class Extended_Search_Search_Modification
      */
     public function search_on_custom_table($where, $wp_query)
     {
+        if (!is_search()) return $where;
+
         global $wpdb;
         $table_name = $wpdb->prefix . 'ttdn_meta_customtable';
 
-        if (is_search()) {
-            $where = preg_replace(
-                "/\(\s*" . $wpdb->posts . ".post_title\s+LIKE\s*(\'[^\']+\')\s*\)/",
-                "(" . $wpdb->posts . ".post_title LIKE $1) OR (" . $wpdb->posts . ".post_content LIKE $1) OR (" . $wpdb->posts . ".ID IN (
-                    SELECT ID FROM " . $table_name . " WHERE mst LIKE $1 OR ten_cong_ty LIKE $1 OR ho_ten_dai_dien_phap_luat LIKE $1
-                ))",
-                $where
-            );
-        }
+
+        $where = preg_replace(
+            "/AND\s\(\(\(\s*" . $wpdb->posts . ".post_title\s+LIKE\s*(\'[^\']+\')\s*\)/",
+            "",
+            $where
+        );
+
+        // Removed search in excerpt
+        $where = preg_replace(
+            "/OR\s\(\s*" . $wpdb->posts . ".post_excerpt\s+LIKE\s*(\'[^\']+\')\s*\)/",
+            "",
+            $where
+        );
+
+        // Removed Search in content
+        $where = preg_replace(
+            "/OR\s\(\s*" . $wpdb->posts . ".post_content\s+LIKE\s*(\'[^\']+\')\s*\)\)\)/",
+            "",
+            $where
+        );
+
+        $where .= ' AND ( ' . $table_name . ".mst LIKE '%aaaaaaa%' OR "
+            . $table_name . ".ten_cong_ty LIKE '%aaaaaaa%' )";
 
         return $where;
     }

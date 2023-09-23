@@ -21,3 +21,4 @@ define('EXTENDED_SEARCH_PLUGIN_DIR_URL', plugin_dir_url(__FILE__));
 
 // Add dependencies
 require EXTENDED_SEARCH_PLUGIN_DIR_PATH . 'inc/validation-notice.php';
+require EXTENDED_SEARCH_PLUGIN_DIR_PATH . 'inc/class-search-modify.php';

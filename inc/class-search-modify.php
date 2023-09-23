@@ -52,6 +52,10 @@ class Extended_Search_Search_Modification
         global $wpdb;
         $table_name = $wpdb->prefix . 'ttdn_meta_customtable';
 
+        $search_query = $wp_query->get('s');
+
+        $value = '%' . esc_sql($wpdb->esc_like($search_query)) . '%';
+
 
         $where = preg_replace(
             "/AND\s\(\(\(\s*" . $wpdb->posts . ".post_title\s+LIKE\s*(\'[^\']+\')\s*\)/",
@@ -73,8 +77,8 @@ class Extended_Search_Search_Modification
             $where
         );
 
-        $where .= ' AND ( ' . $table_name . ".mst LIKE '%aaaaaaa%' OR "
-            . $table_name . ".ten_cong_ty LIKE '%aaaaaaa%' )";
+
+        $where .= " AND ($table_name.mst LIKE '$value' OR $table_name.ten_cong_ty LIKE '$value' OR $table_name.ho_ten_dai_dien_phap_luat LIKE '$value' )";
 
         return $where;
     }

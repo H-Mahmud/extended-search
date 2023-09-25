@@ -17,6 +17,7 @@ class Extended_Search_Search_Modification
         add_filter('posts_join', array($this, 'join_the_custom_table'), 10, 1);
         add_filter('posts_where', array($this, 'search_on_custom_table'), 100, 2);
         add_filter('posts_distinct', array($this, 'search_query_district'), 10, 1);
+        add_filter('posts_orderby', array($this, 'remove_order_by_from_search'), 10, 2);
     }
 
 
@@ -84,6 +85,22 @@ class Extended_Search_Search_Modification
             return "DISTINCT";
         }
         return $where;
+    }
+
+
+    /**
+     * Remove Order by from search
+     * 
+     * @since 1.3.0
+     * @version 1.0.0
+     */
+    public function remove_order_by_from_search($orderby, $wp_query)
+    {
+        if (!is_admin() && $wp_query->is_search) {
+            $orderby = '';
+        }
+
+        return $orderby;
     }
 }
 

@@ -4,7 +4,7 @@
  * Customize & Expand WordPress Default Search functionality
  * 
  * @since 1.0.0
- * @version 1.0.0
+ * @version 2.0.0
  */
 class Extended_Search_Search_Modification
 {
@@ -15,6 +15,7 @@ class Extended_Search_Search_Modification
     public function run()
     {
         add_filter('posts_join', array($this, 'join_the_custom_table'), 10, 1);
+        add_filter('posts_search', array($this, 'exclude_search_on_post_table'), 10, 2);
         add_filter('posts_where', array($this, 'search_on_custom_table'), 100, 2);
         add_filter('posts_distinct', array($this, 'search_query_district'), 10, 1);
         add_filter('posts_orderby', array($this, 'remove_order_by_from_search'), 10, 2);
@@ -38,6 +39,30 @@ class Extended_Search_Search_Modification
         }
         return $join;
     }
+
+
+    /**
+     * Exclude Searching on WordPress post table
+     * 
+     * @since 1.4.0
+     * @version 1.0.0
+     */
+    public function exclude_search_on_post_table($search, $wp_query)
+    {
+        if (is_search() && !is_admin()) {
+            global $wpdb;
+            $search = preg_replace(
+                "/{$wpdb->posts}.post_title/
+            OR {$wpdb->posts}.post_content
+            OR {$wpdb->posts}.post_excerpt/",
+                "",
+                $search
+            );
+        }
+
+        return $search;
+    }
+
 
 
     /**

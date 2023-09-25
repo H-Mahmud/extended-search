@@ -43,7 +43,7 @@ class Extended_Search_Search_Modification
      * Add custom table field for searching
      * 
      * @since 1.0.0
-     * @version 1.0.0
+     * @version 2.0.0
      */
     public function search_on_custom_table($where, $wp_query)
     {
@@ -53,32 +53,18 @@ class Extended_Search_Search_Modification
         $table_name = $wpdb->prefix . 'ttdn_meta_customtable';
 
         $search_query = $wp_query->get('s');
+        $keywords = explode(' ', $search_query);
 
-        $value = '%' . esc_sql($wpdb->esc_like($search_query)) . '%';
+        $where .= " AND (";
 
+        foreach ($keywords as $keyword) {
+            $value = '%' . esc_sql($wpdb->esc_like($keyword)) . '%';
+            $where .= " $table_name.mst LIKE '$value' OR $table_name.ten_cong_ty LIKE '$value' OR $table_name.ho_ten_dai_dien_phap_luat LIKE '$value' OR";
+        }
 
-        $where = preg_replace(
-            "/AND\s\(\(\(\s*" . $wpdb->posts . ".post_title\s+LIKE\s*(\'[^\']+\')\s*\)/",
-            "",
-            $where
-        );
+        $where = rtrim($where, ' OR');
+        $where .= ")";
 
-        // Removed search in excerpt
-        $where = preg_replace(
-            "/OR\s\(\s*" . $wpdb->posts . ".post_excerpt\s+LIKE\s*(\'[^\']+\')\s*\)/",
-            "",
-            $where
-        );
-
-        // Removed Search in content
-        $where = preg_replace(
-            "/OR\s\(\s*" . $wpdb->posts . ".post_content\s+LIKE\s*(\'[^\']+\')\s*\)\)\)/",
-            "",
-            $where
-        );
-
-
-        $where .= " AND ($table_name.mst LIKE '$value' OR $table_name.ten_cong_ty LIKE '$value' OR $table_name.ho_ten_dai_dien_phap_luat LIKE '$value' )";
 
         return $where;
     }

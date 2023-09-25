@@ -3,7 +3,7 @@
  * Plugin Name:       Extended Search
  * Plugin URI:        https://github.com/H-Mahmud/extended-search/
  * Description:       Replace default WordPress search with custom table search.
- * Version:           1.4.0
+ * Version:           1.4.1
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Mahmudul Hasan

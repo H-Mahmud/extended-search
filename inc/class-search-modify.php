@@ -45,19 +45,12 @@ class Extended_Search_Search_Modification
      * Exclude Searching on WordPress post table
      * 
      * @since 1.4.0
-     * @version 1.0.0
+     * @version 2.0.0
      */
     public function exclude_search_on_post_table($search, $wp_query)
     {
         if (is_search() && !is_admin()) {
-            global $wpdb;
-            $search = preg_replace(
-                "/{$wpdb->posts}.post_title/
-            OR {$wpdb->posts}.post_content
-            OR {$wpdb->posts}.post_excerpt/",
-                "",
-                $search
-            );
+            $search = '';
         }
 
         return $search;

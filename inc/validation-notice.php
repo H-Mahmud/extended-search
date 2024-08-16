@@ -13,12 +13,14 @@ function is_extended_search_table_exists()
 
 function extended_search_table_not_found_notice()
 {
-    if (is_extended_search_table_exists()) return;
-?>
+    if (is_extended_search_table_exists())
+        return;
+    ?>
     <div class="notice notice-error is-dismissible">
-        <p><?php _e('The custom table "wp_ttdn_meta_customtable" does not exist. Please take action to create it.', 'text-domain'); ?></p>
+        <p><?php _e('The custom table "wp_ttdn_meta_customtable" does not exist. Please take action to create it.', 'extended-search'); ?>
+        </p>
     </div>
-<?php
+    <?php
 }
 
 add_action('admin_init', 'extended_search_table_not_found_notice', 10);
